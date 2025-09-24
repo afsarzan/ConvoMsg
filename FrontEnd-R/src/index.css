@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @theme {
   --primary-cream: #F6F1E9;
   --primary-yellow: #FFD93D;
   --primary-orange: #FF9A00;
   --primary-brown: #4F200D;
+  --primary-gray: #cbcbcb;
 }

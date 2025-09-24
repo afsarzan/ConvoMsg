@@ -156,12 +156,21 @@ const ChatBox: React.FC = () => {
 
   return (
     <div style={{ position: 'relative', minHeight: '550px', backgroundColor: 'var(--primary-orange)'  }} 
-        className='pt-8 w-[500px] mx-auto rounded-lg shadow-lg  h-1/2'>
+        className='pt-2 w-[500px] mx-auto rounded-lg shadow-lg  h-[650px]'>
       {/* Background with the centered chat box */}
-      <div className="p-2">
-        <h1 className="text-2xl font-bold text-center mb-8" style={{ color: 'var(--primary-cream)' }}>
-          Chat Message Box Demo
-        </h1>
+      <div className="p-1 min-h-8/10" style={{ backgroundColor: 'var(--primary-gray)' }}>
+        <div className="flex items-center gap-4 bg-white p-6  outline outline-black/5 dark:bg-gray-800">
+            <span className="inline-flex shrink-0 rounded-full border border-pink-300 bg-pink-100 p-2 dark:border-pink-300/10 dark:bg-pink-400/10">
+                <svg className="size-6 stroke-pink-700 dark:stroke-pink-500">s</svg>
+            </span>
+            <div>
+                <p className="text-gray-700 dark:text-gray-400">
+                <span className="font-medium text-gray-950 dark:text-white">Tom Watson</span> mentioned you in
+                <span className="font-medium text-gray-950 dark:text-white">Logo redesign</span>
+                </p>
+                <time className="mt-1 block text-gray-500" datetime="9:37">9:37am</time>
+            </div>
+            </div>
         
         {/* Messages display area */}
         <div className="rounded-lg shadow-lg border-2 mb-2 max-h-96 overflow-y-auto" style={{ backgroundColor: 'var(--primary-cream)', borderColor: 'var(--primary-orange)' }}>
@@ -193,11 +202,13 @@ const ChatBox: React.FC = () => {
       </div>
       
       {/* Chat message box - centered */}
-      <ChatMessageBox
-        onSendMessage={handleSendMessage}
-        placeholder="Type your message here..."
-        maxLength={500}
-      />
+      <div className='min-h-1/10'>
+        <ChatMessageBox
+            onSendMessage={handleSendMessage}
+            placeholder="Type your message here..."
+            maxLength={500}
+        />
+        </div>
     </div>
   );
 };
