@@ -145,16 +145,16 @@ const ChatBox: React.FC<ChatBoxProps> = ( { name }) => {
     
     setMessages(prev => [...prev, newMessage]);
     
-    // Simulate bot response
-    setTimeout(() => {
-      const botResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        text: `I received your message: "${messageText}"`,
-        timestamp: new Date(),
-        sender: 'bot'
-      };
-      setMessages(prev => [...prev, botResponse]);
-    }, 1000);
+    // // Simulate bot response
+    // setTimeout(() => {
+    //   const botResponse: Message = {
+    //     id: (Date.now() + 1).toString(),
+    //     text: `I received your message: "${messageText}"`,
+    //     timestamp: new Date(),
+    //     sender: 'bot'
+    //   };
+    //   setMessages(prev => [...prev, botResponse]);
+    // }, 1000);
   };
 
   return (
