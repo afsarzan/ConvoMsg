@@ -1,8 +1,14 @@
+import { useState } from 'react';
 import './App.css'
 import ChatBox from './components/chatbox'
 import EnterBox from './components/EnterBox'
 
 function App() {
+const [name, setName] = useState<String | null>('');
+
+const handleSetName = (newName: string) => {
+  setName(newName);
+}
 
   return (
     <div style={{
@@ -13,8 +19,8 @@ function App() {
         justifyContent: 'center',
         display: 'flex'
       }} >
-        <EnterBox />
-      {/* <ChatBox /> */}
+        { name ? <ChatBox  name={name}/> : <EnterBox  name={name} setName={handleSetName} /> }
+        
     </div>
   )
 }

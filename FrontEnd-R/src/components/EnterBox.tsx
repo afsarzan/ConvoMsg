@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Send } from 'lucide-react';
 
 // Simple Button component (shadcn/ui style)
@@ -46,58 +46,55 @@ const Input = React.forwardRef<
   );
 });
 
-// TypeScript interfaces
-interface Message {
-  id: string;
-  text: string;
-  timestamp: Date;
-  sender: 'user' | 'bot';
-}
+
 
 interface ChatMessageBoxProps {
-  onSendMessage: (message: string) => void;
+  onSendMessage: (name: string) => void;
   placeholder?: string;
   disabled?: boolean;
   maxLength?: number;
+  name: string | null;
+  setName: (name: string) => void;
 }
 
 const ChatMessageBox: React.FC<ChatMessageBoxProps> = ({
   onSendMessage,
-  placeholder = "Type your message...",
+  placeholder = "Type your name...",
   disabled = false,
-  maxLength = 500
+  maxLength = 500,
+  name,
+  setName
 }) => {
-  const [message, setMessage] = useState<string>('');
 
-  const handleSend = () => {
-    if (message.trim() && !disabled) {
-      onSendMessage(message.trim());
-      setMessage('');
+    const [localName, setLocalName] = React.useState(name || '');
+  const handleNameUpdate = () => {
+    if (!!localName && localName.trim() && !disabled) {
+      onSendMessage(localName.trim());
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if ( (e.key === 'Enter' && !e.shiftKey && e.currentTarget.value.trim().length >=3) ) {
       e.preventDefault();
-      handleSend();
+      setName(e.currentTarget.value)
     }
+    setLocalName(e.currentTarget.value);
   };
 
-  const isMessageValid = message.trim().length > 0 && message.length <= maxLength;
 
   return (
     <div className="p-4">
-      {/* Message input area */}
+      {/* Name input area */}
         <div className='mb-2 '>
-          <h2 className='font-bold'>Enter Your name</h2>
+          <h2 className='font-bold'>Enter Your Name: </h2>
           <h4 className='text-sm'> Enter your name to start chatting. This will be used to identify</h4>
         </div>
       <div className="flex items-end gap-2 p-4 rounded-lg shadow-lg border-2" style={{ backgroundColor: 'var(--primary-cream)', borderColor: 'var(--primary-orange)' }}>
         <div className="flex-1">
           <Input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={localName}
             onKeyPress={handleKeyPress}
+            onChange={(e) => setLocalName(e.target.value)}
             placeholder={placeholder}
             disabled={disabled}
             maxLength={maxLength}
@@ -106,10 +103,9 @@ const ChatMessageBox: React.FC<ChatMessageBoxProps> = ({
           />
           
         </div>
-        
         <Button
-          onClick={handleSend}
-          disabled={!isMessageValid || disabled}
+          onClick={handleNameUpdate}
+          disabled={localName?.length < 3}
           size="sm"
           className="text-black hover:opacity-80 transition-opacity"
           style={{ backgroundColor: '#FFD93D' }}
@@ -121,19 +117,15 @@ const ChatMessageBox: React.FC<ChatMessageBoxProps> = ({
   );
 };
 
-// Demo component to show the chat message box in action
-const EnterBox: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: 'Hello! How can I help you today?',
-      timestamp: new Date(),
-      sender: 'bot'
-    }
-  ]);
+interface EnterBoxProps {
+  name: string | null;
+  setName: ( name: string ) => void
+}
+// Demo component to show the chat name box in action
+const EnterBox: React.FC<EnterBoxProps> = ( {name, setName}) => {  
 
   const handleSendMessage = (messageText: string) => {
-  console.log("Message sent:", messageText);
+    setName(messageText)
   };
 
   return (
@@ -142,12 +134,14 @@ const EnterBox: React.FC = () => {
       {/* Background with the centered chat box */}
     
       
-      {/* Chat message box - centered */}
+      {/* Chat name box - centered */}
       <div className='min-h-1/10'>
         <ChatMessageBox
             onSendMessage={handleSendMessage}
-            placeholder="Type your message here..."
+            placeholder="Type your name here..."
             maxLength={500}
+            name={name}
+            setName={setName}
         />
         </div>
     </div>
