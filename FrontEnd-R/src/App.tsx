@@ -1,5 +1,6 @@
 import './App.css'
 import ChatBox from './components/chatbox'
+import EnterBox from './components/EnterBox'
 
 function App() {
 
@@ -12,7 +13,8 @@ function App() {
         justifyContent: 'center',
         display: 'flex'
       }} >
-      <ChatBox />
+        <EnterBox />
+      {/* <ChatBox /> */}
     </div>
   )
 }
