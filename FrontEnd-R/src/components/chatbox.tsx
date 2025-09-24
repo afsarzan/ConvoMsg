@@ -88,7 +88,7 @@ const ChatMessageBox: React.FC<ChatMessageBoxProps> = ({
   return (
     <div className="p-4">
       {/* Message input area */}
-      <div className="flex items-end gap-2 p-4 rounded-lg shadow-lg border-2" style={{ backgroundColor: 'var(--primary-cream)', borderColor: 'var(--primary-orange)' }}>
+      <div className="flex  gap-2 p-4 rounded-lg shadow-lg border-2" style={{ backgroundColor: 'var(--primary-cream)', borderColor: 'var(--primary-orange)' }}>
         <div className="flex-1">
           <Input
             value={message}
@@ -164,14 +164,14 @@ const ChatBox: React.FC<ChatBoxProps> = ( { name }) => {
       <div className="p-1 min-h-8/10" style={{ backgroundColor: 'var(--primary-gray)' }}>
         <div className="flex items-center gap-4 bg-white p-6  outline outline-black/5 dark:bg-gray-800">
             <span className="inline-flex shrink-0 rounded-full border border-pink-300 bg-pink-100 p-2 dark:border-pink-300/10 dark:bg-pink-400/10">
-                <svg className="size-6 stroke-pink-700 dark:stroke-pink-500">s</svg>
+                <svg className="size-6 stroke-pink-700 dark:stroke-pink-500">ssdsd</svg>
             </span>
             <div>
                 <p className="text-gray-700 dark:text-gray-400">
                   Signed in as 
                 <span className="font-medium text-gray-950 dark:text-white"> {name}</span>
                 </p>
-                <time className="mt-1 block text-gray-500">9:37am</time>
+                <time className="mt-1 block text-gray-500 text-sm text-gray">Someone is typing...</time>
             </div>
             </div>
         
