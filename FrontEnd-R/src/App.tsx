@@ -12,7 +12,7 @@ export interface Message {
 }
 
 function App() {
-  const [name, setName] = useState<String | null>("");
+  const [name, setName] = useState<string | null>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const handleSetName = (newName: string) => {
     setName(newName);

@@ -31,6 +31,9 @@ io.on('connection', (socket) => {
     console.log('message: ' + {msg});
     socket.to(ROOM).emit('chatMessage', msg);
   });
+  socket.on('typing', (name) => {
+    socket.to(ROOM).emit('typing', name);
+  });
 });
 
 server.listen(4600, () => {

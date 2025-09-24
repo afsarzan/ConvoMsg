@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Send } from 'lucide-react';
 import type { Message } from '../App';
 
@@ -55,13 +55,17 @@ interface ChatMessageBoxProps {
   placeholder?: string;
   disabled?: boolean;
   maxLength?: number;
+  socket: React.MutableRefObject<any>;
+  name: string | null;
 }
 
 const ChatMessageBox: React.FC<ChatMessageBoxProps> = ({
   onSendMessage,
   placeholder = "Type your message...",
   disabled = false,
-  maxLength = 500
+  maxLength = 500,
+  socket,
+  name
 }) => {
   const [message, setMessage] = useState<string>('');
 
@@ -78,6 +82,13 @@ const ChatMessageBox: React.FC<ChatMessageBoxProps> = ({
       handleSend();
     }
   };
+
+  useEffect( () => {
+    if(message.trim() && name && message.length) {
+      socket.current.emit('typing',name)
+    }
+  },[message]);
+
 
   const isMessageValid = message.trim().length > 0 && message.length <= maxLength;
 
@@ -126,6 +137,19 @@ interface ChatBoxProps {
 // Demo component to show the chat message box in action
 const ChatBox: React.FC<ChatBoxProps> = ( { name, messages, setMessages, socket }) => {
  
+  const [typing, setTyping] = useState<string>('');
+
+  useEffect(() => {
+    if (!socket.current) return;  
+    socket.current.on('typing', (userName: string) => {
+      setTyping((prev) => [...new Set([userName, ...prev.split(', ')])].join(', '));  
+      setTimeout(() => setTyping(''), 2000); // Clear after 2 seconds
+    });
+
+    return () => {
+      socket.current.off('typing');
+    };  
+  }, [socket]);
 
   const handleSendMessage = (messageText: string) => {
 
@@ -140,10 +164,8 @@ const ChatBox: React.FC<ChatBoxProps> = ( { name, messages, setMessages, socket 
     };
     
     setMessages(prev => [...prev, newMessage]);
-
     socket.current.emit('chatMessage', newMessage);
-    
-
+  
   };
 
   return (
@@ -160,7 +182,9 @@ const ChatBox: React.FC<ChatBoxProps> = ( { name, messages, setMessages, socket 
                   Signed in as 
                 <span className="font-medium text-gray-950 dark:text-white"> {name}</span>
                 </p>
-                <time className="mt-1 block text-gray-500 text-sm text-gray">Someone is typing...</time>
+               { typing &&
+                <span className="mt-1 block text-gray-500 text-sm text-gray">{typing} is typing...</span>
+                }
             </div>
             </div>
         
@@ -204,6 +228,8 @@ const ChatBox: React.FC<ChatBoxProps> = ( { name, messages, setMessages, socket 
             onSendMessage={handleSendMessage}
             placeholder="Type your message here..."
             maxLength={500}
+            socket={socket}
+            name={name}
         />
         </div>
     </div>
