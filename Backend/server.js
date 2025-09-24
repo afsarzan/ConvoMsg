@@ -19,13 +19,17 @@ const ROOM = 'convoMsgRoom';
 io.on('connection', (socket) => {
   console.log('a user connected', socket.id);
 
-  socket.on('joinRoom', (username) => {
+  socket.on('joinRoom', async (username) => {
     console.log(`${username} joined the room`);
-    
-    socket.join(ROOM);
+    await socket.join(ROOM);
+    socket.to(ROOM).emit('roomNotice', username);
   });
   socket.on('disconnect', () => {
     console.log('user disconnected');
+  });
+  socket.on('chatMessage', (msg) => {
+    console.log('message: ' + {msg});
+    socket.to(ROOM).emit('chatMessage', msg);
   });
 });
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send } from 'lucide-react';
+import type { Message } from '../App';
 
 // Simple Button component (shadcn/ui style)
 const Button = React.forwardRef<
@@ -47,12 +48,7 @@ const Input = React.forwardRef<
 });
 
 // TypeScript interfaces
-interface Message {
-  id: string;
-  text: string;
-  timestamp: Date;
-  sender: 'user' | 'bot';
-}
+
 
 interface ChatMessageBoxProps {
   onSendMessage: (message: string) => void;
@@ -122,39 +118,32 @@ const ChatMessageBox: React.FC<ChatMessageBoxProps> = ({
 };
 
 interface ChatBoxProps {
-  name: String;
+  name: string;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  socket: React.MutableRefObject<any>;
 }
 // Demo component to show the chat message box in action
-const ChatBox: React.FC<ChatBoxProps> = ( { name }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: 'Hello! How can I help you today?',
-      timestamp: new Date(),
-      sender: 'bot'
-    }
-  ]);
+const ChatBox: React.FC<ChatBoxProps> = ( { name, messages, setMessages, socket }) => {
+ 
 
   const handleSendMessage = (messageText: string) => {
+
+    const t = messageText.trim();
+    if (!t) return;
+    
     const newMessage: Message = {
       id: Date.now().toString(),
-      text: messageText,
+      text: t,
       timestamp: new Date(),
-      sender: 'user'
+      sender: name
     };
     
     setMessages(prev => [...prev, newMessage]);
+
+    socket.current.emit('chatMessage', newMessage);
     
-    // // Simulate bot response
-    // setTimeout(() => {
-    //   const botResponse: Message = {
-    //     id: (Date.now() + 1).toString(),
-    //     text: `I received your message: "${messageText}"`,
-    //     timestamp: new Date(),
-    //     sender: 'bot'
-    //   };
-    //   setMessages(prev => [...prev, botResponse]);
-    // }, 1000);
+
   };
 
   return (
@@ -178,28 +167,33 @@ const ChatBox: React.FC<ChatBoxProps> = ( { name }) => {
         {/* Messages display area */}
         <div className="rounded-lg shadow-lg border-2 mb-2 max-h-96 overflow-y-auto" style={{ backgroundColor: 'var(--primary-cream)', borderColor: 'var(--primary-orange)' }}>
           <div className="p-4 space-y-4">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                    msg.sender === 'user'
-                      ? 'text-black'
-                      : 'text-black'
-                  }`}
-                  style={{
-                    backgroundColor: msg.sender === 'user' ? '#FFD93D' : 'var(--primary-orange)'
-                  }}
-                >
-                  <p className="text-sm">{msg.text}</p>
-                  <p className="text-xs opacity-75 mt-1">
-                    {msg.timestamp.toLocaleTimeString()}
-                  </p>
-                </div>
-              </div>
-            ))}
+            {messages.map((msg) => {
+              const mine = msg.sender === name;
+              return (
+                 <div
+                    key={msg.id}
+                    className={`flex ${mine ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        mine
+                          ? 'text-black'
+                          : 'text-black'
+                      }`}
+                      style={{
+                        backgroundColor: mine ? '#FFD93D' : 'var(--primary-orange)'
+                      }}
+                    >
+                      <p className="text-sm">{msg.sender}: {msg.text}</p>
+                      <p className="text-xs opacity-75 mt-1">
+                        {msg.timestamp ? String(msg.timestamp) : ''}
+                      
+                      </p>
+                    </div>
+                  </div>
+                  )
+                }             
+            )}
           </div>
         </div>
       </div>
