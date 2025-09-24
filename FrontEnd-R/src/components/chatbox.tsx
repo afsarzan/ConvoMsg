@@ -86,9 +86,9 @@ const ChatMessageBox: React.FC<ChatMessageBoxProps> = ({
   const isMessageValid = message.trim().length > 0 && message.length <= maxLength;
 
   return (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] p-4">
+    <div className="p-4">
       {/* Message input area */}
-      <div className="flex items-end gap-2 p-4 rounded-lg shadow-lg border-2" style={{ backgroundColor: '#F6F1E9', borderColor: '#FF9A00' }}>
+      <div className="flex items-end gap-2 p-4 rounded-lg shadow-lg border-2" style={{ backgroundColor: 'var(--primary-cream)', borderColor: 'var(--primary-orange)' }}>
         <div className="flex-1">
           <Input
             value={message}
@@ -155,15 +155,16 @@ const ChatBox: React.FC = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#4F200D' }}>
+    <div style={{ position: 'relative', minHeight: '550px', backgroundColor: 'var(--primary-orange)'  }} 
+        className='pt-8 w-[500px] mx-auto rounded-lg shadow-lg  h-1/2'>
       {/* Background with the centered chat box */}
-      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-[500px]">
-        <h1 className="text-2xl font-bold text-center mb-8" style={{ color: '#F6F1E9' }}>
+      <div className="p-2">
+        <h1 className="text-2xl font-bold text-center mb-8" style={{ color: 'var(--primary-cream)' }}>
           Chat Message Box Demo
         </h1>
         
         {/* Messages display area */}
-        <div className="rounded-lg shadow-lg border-2 mb-4 max-h-96 overflow-y-auto" style={{ backgroundColor: '#F6F1E9', borderColor: '#FF9A00' }}>
+        <div className="rounded-lg shadow-lg border-2 mb-2 max-h-96 overflow-y-auto" style={{ backgroundColor: 'var(--primary-cream)', borderColor: 'var(--primary-orange)' }}>
           <div className="p-4 space-y-4">
             {messages.map((msg) => (
               <div
@@ -177,7 +178,7 @@ const ChatBox: React.FC = () => {
                       : 'text-black'
                   }`}
                   style={{
-                    backgroundColor: msg.sender === 'user' ? '#FFD93D' : '#FF9A00'
+                    backgroundColor: msg.sender === 'user' ? '#FFD93D' : 'var(--primary-orange)'
                   }}
                 >
                   <p className="text-sm">{msg.text}</p>

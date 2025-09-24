@@ -4,7 +4,14 @@ import ChatBox from './components/chatbox'
 function App() {
 
   return (
-    <div className="w-[500px] mx-auto h-1/2 md:h-full">
+    <div style={{
+        backgroundColor: 'var(--primary-brown)',
+        color: 'var(--primary-brown)',
+        minHeight: '100vh',
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex'
+      }} >
       <ChatBox />
     </div>
   )
