@@ -1,1 +1,39 @@
-<p>chat-box works!</p>
+<!-- Chat window -->
+<div class="flex flex-col h-[65vh] max-w-lg mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+
+  <!-- Header -->
+  <div class="flex items-center gap-3 px-4 py-3 text-white"
+       style="background-color:#3A6F43">
+    <img src="https://i.pravatar.cc/40?u=a" class="w-10 h-10 rounded-full">
+    <span class="font-semibold">Angular Bot</span>
+  </div>
+
+  <!-- Messages -->
+  <div class="flex-1 overflow-y-auto px-4 py-3 space-y-3">
+     @for (message of messages(); track message.id){
+      <div
+          class="flex"
+          [class.justify-end]="message.me">
+        <div class="max-w-[75%] px-4 py-2 rounded-2xl text-sm"
+            [style.background-color]="message.me ? '#59AC77' : '#FFD5D5'"
+            [style.color]="message.me ? 'white' : '#3A6F43'">
+          {{ message.text }}
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Input bar -->
+  <div class="flex items-center gap-2 px-3 py-2 border-t"
+       style="background-color:#FDAAAA">
+    <input [(ngModel)]="draft"
+           (keyup.enter)="send()"
+           placeholder="Type a message…"
+           class="flex-1 px-3 py-2 rounded-full text-gray-800 bg-white focus:outline-none">
+    <button (click)="send()"
+            class="px-4 py-2 rounded-full text-white font-semibold hover:opacity-90 transition"
+            style="background-color:#3A6F43">
+      Send
+    </button>
+  </div>
+</div>

@@ -1,2 +1,6 @@
-<app-landing-box></app-landing-box>
-<app-chat-box></app-chat-box>
+<app-landing-box 
+  *ngIf="userNameLength()===0" 
+  [userName]="userName()" 
+  (setUserNameHandler)="setUserName($event)">
+</app-landing-box>
+<app-chat-box *ngIf="userNameLength()"></app-chat-box>

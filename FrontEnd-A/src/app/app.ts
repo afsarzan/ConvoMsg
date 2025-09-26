@@ -1,18 +1,19 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, computed, signal } from '@angular/core';
 import { LandingBox } from './landing-box/landing-box';
 import { ChatBox } from './chat-box/chat-box';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,LandingBox,ChatBox],
+  imports: [LandingBox,ChatBox, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  userName = signal<string | null>(null);
+  userName = signal<string>('');
+  userNameLength = computed( () => this.userName().length)
 
-  setUserName(name: string) {
-    this.userName.set(name);
+  setUserName(userName: string) {
+    this.userName.set(userName);
   }
 }
