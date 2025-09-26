@@ -1,39 +1,90 @@
-<!-- Chat window -->
-<div class="flex flex-col h-[65vh] max-w-lg mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-
-  <!-- Header -->
-  <div class="flex items-center gap-3 px-4 py-3 text-white"
-       style="background-color:#3A6F43">
-    <img src="https://i.pravatar.cc/40?u=a" class="w-10 h-10 rounded-full">
-    <span class="font-semibold">Angular Bot</span>
-  </div>
-
-  <!-- Messages -->
-  <div class="flex-1 overflow-y-auto px-4 py-3 space-y-3">
-     @for (message of messages(); track message.id){
-      <div
-          class="flex"
-          [class.justify-end]="message.me">
-        <div class="max-w-[75%] px-4 py-2 rounded-2xl text-sm"
-            [style.background-color]="message.me ? '#59AC77' : '#FFD5D5'"
-            [style.color]="message.me ? 'white' : '#3A6F43'">
-          {{ message.text }}
+ <mat-card class="chat-container">
+      <!-- Chat Header -->
+      <mat-card-header class="chat-header">
+        <div mat-card-avatar class="chat-avatar">
+          <mat-icon>support_agent</mat-icon>
         </div>
-      </div>
-    }
-  </div>
+        <mat-card-title>Chat Support</mat-card-title>
+        <mat-card-subtitle>Online</mat-card-subtitle>
+        <div class="header-actions">
+          <button mat-icon-button>
+            <mat-icon>minimize</mat-icon>
+          </button>
+          <button mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
 
-  <!-- Input bar -->
-  <div class="flex items-center gap-2 px-3 py-2 border-t"
-       style="background-color:#FDAAAA">
-    <input [(ngModel)]="draft"
-           (keyup.enter)="send()"
-           placeholder="Type a message…"
-           class="flex-1 px-3 py-2 rounded-full text-gray-800 bg-white focus:outline-none">
-    <button (click)="send()"
-            class="px-4 py-2 rounded-full text-white font-semibold hover:opacity-90 transition"
-            style="background-color:#3A6F43">
-      Send
-    </button>
-  </div>
-</div>
+      <!-- Messages Container -->
+      <mat-card-content class="messages-container" #messagesContainer>
+        <div class="messages-list">
+          <div 
+            *ngFor="let message of messages; trackBy: trackByMessage"
+            class="message-wrapper"
+            [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}"
+          >
+            <!-- Avatar -->
+            <div class="message-avatar" *ngIf="message.sender === 'bot'">
+              <mat-icon class="bot-icon">smart_toy</mat-icon>
+            </div>
+
+            <!-- Message Bubble -->
+            <div class="message-bubble" [ngClass]="message.sender + '-bubble'">
+              <div class="message-text">{{ message.text }}</div>
+              <div class="message-time">
+                {{ formatTime(message.timestamp) }}
+              </div>
+            </div>
+
+            <!-- User Avatar -->
+            <div class="message-avatar" *ngIf="message.sender === 'user'">
+              <mat-icon class="user-icon">person</mat-icon>
+            </div>
+          </div>
+
+          <!-- Typing Indicator -->
+          <div class="message-wrapper bot-message" *ngIf="isTyping">
+            <div class="message-avatar">
+              <mat-icon class="bot-icon">smart_toy</mat-icon>
+            </div>
+            <div class="message-bubble bot-bubble typing-bubble">
+              <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <!-- Input Area -->
+      <mat-card-actions class="chat-input-area">
+        <div class="input-container">
+          <mat-form-field class="message-input" appearance="outline">
+            <mat-label>Type a message...</mat-label>
+            <input 
+              matInput 
+              [formControl]="messageControl"
+              (keydown.enter)="sendMessage()"
+              placeholder="Type your message here..."
+              #messageInput
+            >
+            <button 
+              mat-icon-button 
+              matSuffix 
+              (click)="sendMessage()"
+              [disabled]="!messageControl.value?.trim()"
+              color="primary"
+            >
+              <mat-icon>send</mat-icon>
+            </button>
+          </mat-form-field>
+          
+          <button mat-icon-button class="attachment-btn" title="Attach file">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
