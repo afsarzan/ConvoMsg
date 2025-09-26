@@ -28,17 +28,7 @@
       justify-content: center;
     }
 
-    .header-actions {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    .header-actions button {
-      color: white;
-    }
-
+ 
     .messages-container {
       flex: 1;
       overflow-y: auto;
@@ -176,8 +166,9 @@
       background: white;
       border-top: 1px solid #e0e0e0;
     }
-
+    
     .input-container {
+        width: 100%;
       display: flex;
       gap: 8px;
       align-items: flex-end;
