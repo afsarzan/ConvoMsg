@@ -22,7 +22,13 @@ I'm a full stack developer...
 
 ## Screenshots
 
+#React Implementation
+
 ![App Screenshot](./application.png)
 
 
-#React
+#Angular Implementation
+
+![App Screenshot](./application-A.png)
+
+
