@@ -3,4 +3,4 @@
   [userName]="userName()" 
   (setUserNameHandler)="setUserName($event)">
 </app-landing-box>
-<app-chat-box *ngIf="userNameLength()"></app-chat-box>
+<app-chat-box *ngIf="userNameLength()" [userName]="userName()"></app-chat-box>

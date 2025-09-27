@@ -53,6 +53,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            padding-bottom: 10px;
+
         }
 
         .app-subtitle {
@@ -69,7 +71,7 @@
 
         .username-input {
             width: 100%;
-            padding: 1rem 1.25rem;
+            padding: 1rem 0.15rem;
             font-size: 1rem;
             border: 2px solid #e1e5e9;
             border-radius: 12px;

@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, input, signal, ViewChild } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,7 +37,7 @@ export class ChatBox {
 
   messageControl = new FormControl('');
   isTyping = false;
-  
+  userName = input('username');
   messages: Message[] = [
     {
       id: 1,
