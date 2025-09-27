@@ -10,13 +10,14 @@ import { SocketService } from './services/socket.service';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class App   {
   userName = signal<string>('');
   userNameLength = computed( () => this.userName().length)
   socketService = inject(SocketService);
-
-  setUserName(userName: string) {
+ 
+ setUserName(userName: string) {
     this.userName.set(userName);
     this.socketService.userJoined(userName);
   }
+  
 }
